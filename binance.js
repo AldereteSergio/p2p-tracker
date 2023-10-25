@@ -27,13 +27,23 @@ function makeRequestAndSaveResponse() {
       
       // Crear un objeto con la fecha y hora
       const now = new Date();
-      const dateTimeObj = { date: now.toLocaleString("es-AR", { timeZone:"America/Argentina/Buenos_Aires"}) };
+      const dateTimeObj = { date: now.toLocaleString("es-AR", { timeZone:"America/Argentina/Buenos_Aires", day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(",", "")};
 
       // Añadir el objeto de fecha y hora al principio del array
       res.unshift(dateTimeObj);
 
+      let salida = '';
+      for (let i = 0; i < res.length; i++) {
+        let value = Object.values(res[i])[0];
+        
+        if (res[i].hasOwnProperty('price')) {
+          salida += `${value}, `;
+        } else {
+          salida += `${value}, `;
+        }
+      }
 
-      console.log(res);
+      console.log(salida);
       
       // Guardar la respuesta en un archivo de texto
       fs.appendFile('output.txt', JSON.stringify(res) + '\n', function (err) {
@@ -47,4 +57,4 @@ function makeRequestAndSaveResponse() {
 }
 
 // Hacer la solicitud cada 30 segundos
-setInterval(makeRequestAndSaveResponse, 300000);
+setInterval(makeRequestAndSaveResponse, 1000);
