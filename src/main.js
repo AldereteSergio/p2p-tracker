@@ -46,7 +46,7 @@ function makeRequestAndSaveResponse() {
       console.log(salida);
       
       // Guardar la respuesta en un archivo de texto
-      fs.appendFile('output.txt', JSON.stringify(res) + '\n', function (err) {
+      fs.appendFile('output.txt', salida + '\n', function (err) {
         if (err) throw err;
         console.log('Saved!');
       });
@@ -57,4 +57,4 @@ function makeRequestAndSaveResponse() {
 }
 
 // Hacer la solicitud cada 30 segundos
-setInterval(makeRequestAndSaveResponse, 1000);
+setInterval(makeRequestAndSaveResponse, 10000);
