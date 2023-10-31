@@ -1,18 +1,21 @@
 const ope = require("./operations/utils");
 const axios = require("axios");
 const fs = require("fs");
+const envy = require("dotenv")
+
+envy.config()
 
 const test = {
-  fiat: "ARS",
+  fiat: process.env.FIAT,
   page: 1,
   rows: 10,
-  tradeType: "BUY",
-  asset: "USDT",
+  tradeType: process.env.TRADE_TYPE,
+  asset: process.env.ASSET,
   countries: [],
   proMerchantAds: false,
   shieldMerchantAds: false,
   publisherType: "merchant",
-  payTypes: ["MercadoPagoNew"],
+  payTypes: [process.env.PAYMENT_TYPE],
   classifies: ["mass", "profession"],
 };
 
@@ -76,4 +79,4 @@ function makeRequestAndSaveResponse() {
     });
 }
 
-setInterval(makeRequestAndSaveResponse, 1000);
+setInterval(makeRequestAndSaveResponse, process.env.TIMEOUT);
