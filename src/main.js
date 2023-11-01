@@ -22,8 +22,12 @@ const test = {
 let lastData = "";
 
 function makeRequestAndSaveResponse() {
+
+  const timeout = process.env.TIMEOUT; // tiempo límite en milisegundos
   axios
-    .post("https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search", test)
+    .post("https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search", test, {
+      timeout: timeout
+    })
     .then(function (response) {
       const operations = response.data.data;
       let res = ope.Select(operations, ["price"]);
@@ -75,8 +79,68 @@ function makeRequestAndSaveResponse() {
       });
     })
     .catch(function (error) {
-      console.error(error);
+      if (error.code === 'ECONNABORTED') {
+        console.error('Tiempo de espera agotado, cancelando la solicitud.');
+      } else {
+        console.error(error);
+      }
     });
+    
 }
 
-setInterval(makeRequestAndSaveResponse, process.env.TIMEOUT);
+setInterval(makeRequestAndSaveResponse, process.env.TIMEOUT+1000);
+
+ /* axios
+    .post("https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search", test)
+    .then(function (response) {
+      const operations = response.data.data;
+      let res = ope.Select(operations, ["price"]);
+
+      // Convertir el objeto en una cadena para la comparación
+      let dataString = JSON.stringify(res);
+
+      if (dataString == lastData) {
+        return;
+      }
+      lastData = dataString;
+
+      // Crear un objeto con la fecha y hora
+      const now = new Date();
+      const dateTimeObj = {
+        date: now
+          .toLocaleString("es-AR", {
+            timeZone: "America/Argentina/Buenos_Aires",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          })
+          .replace(",", ""),
+      };
+
+      // Añadir el objeto de fecha y hora al principio del array
+      res.unshift(dateTimeObj);
+
+      let salida = "";
+      for (let i = 0; i < res.length; i++) {
+        let value = Object.values(res[i])[0];
+
+        if (res[i].hasOwnProperty("price")) {
+          salida += `${value}, `;
+        } else {
+          salida += `${value}, `;
+        }
+      }
+
+      console.log(salida);
+
+      // Guardar la respuesta en un archivo de texto
+      fs.appendFile("output.txt", salida + "\n", function (err) {
+        if (err) throw err;
+        console.log("Saved!");
+      });
+    })*/
+
+
