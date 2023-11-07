@@ -1,7 +1,9 @@
 const ope = require("./operations/utils");
 const axios = require("axios");
 const fs = require("fs");
-const envy = require("dotenv")
+const envy = require("dotenv");
+const { TIMEOUT } = require("dns");
+const { log } = require("console");
 
 envy.config()
 
@@ -24,6 +26,7 @@ let lastData = "";
 function makeRequestAndSaveResponse() {
 
   const timeout = process.env.TIMEOUT; // tiempo límite en milisegundos
+  const showDateTime = process.env.SHOW_DATE_TIME.toLowerCase() === 'true';
   axios
     .post("https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search", test, {
       timeout: timeout
@@ -56,9 +59,11 @@ function makeRequestAndSaveResponse() {
           .replace(",", ""),
       };
 
-      // Añadir el objeto de fecha y hora al principio del array
-      res.unshift(dateTimeObj);
-
+      // Añadir el objeto de fecha y hora al principio del array si ShOW_DATE_TIME es verdadero
+      if (showDateTime) {
+        res.unshift(dateTimeObj);
+      }
+      
       let salida = "";
       for (let i = 0; i < res.length; i++) {
         let value = Object.values(res[i])[0];
@@ -87,8 +92,7 @@ function makeRequestAndSaveResponse() {
     });
     
 }
-
-setInterval(makeRequestAndSaveResponse, process.env.TIMEOUT+1000);
+setInterval(makeRequestAndSaveResponse, parseInt(process.env.TIMEOUT) + 1000);
 
  /* axios
     .post("https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search", test)
