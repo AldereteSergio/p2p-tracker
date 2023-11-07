@@ -1,0 +1,15 @@
+version: '3'
+services:
+  demo1:
+    image: demo1
+    environment:
+      - SHOW_DATE_TIME=false
+      - TIMEOUT=5000
+      - BINANCE_HOST=https://p2p.binance.com #url del HOST de binance
+      - BINANCE_P2P_ENDPOINT=/bapi/c2c/v2/friendly/c2c/adv/search #path del endpoint que tiene los datos monitoreados
+      - FIAT=ARS #moneda fiat
+      - TRADE_TYPE=BUY #tipo de transaccion BUY, SELL
+      - ASSET=USDT #la moneda objetivo USDT
+      - PAYMENT_TYPE=MercadoPagoNew #Un solo medio de pago
+    volumes:
+      - C:/TEMP:/var

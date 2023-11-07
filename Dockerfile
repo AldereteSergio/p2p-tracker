@@ -5,8 +5,8 @@ FROM node:18.18-alpine
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY ./src/operations /app/operations
-COPY ./src/main.js /app/main.js
+COPY ./src/operations /app/src/operations
+COPY ./src/main.js /app/src/main.js
 COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
 

@@ -78,7 +78,7 @@ function makeRequestAndSaveResponse() {
       console.log(salida);
 
       // Guardar la respuesta en un archivo de texto
-      fs.appendFile("output.txt", salida + "\n", function (err) {
+      fs.appendFile("/var/output.txt", salida + "\n", function (err) {
         if (err) throw err;
         console.log("Saved!");
       });
@@ -92,6 +92,8 @@ function makeRequestAndSaveResponse() {
     });
     
 }
+
+console.log("XXXXXXXXXXXXX" + process.env.TIMEOUT);
 setInterval(makeRequestAndSaveResponse, parseInt(process.env.TIMEOUT) + 1000);
 
  /* axios
