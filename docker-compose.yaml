@@ -1,7 +1,7 @@
 version: '3'
 services:
-  demo1:
-    image: demo1
+  p2p-tracker:
+    image: p2p-tracker-test:latest #alderetesergio/p2p-tracker
     environment:
       - SHOW_DATE_TIME=false
       - TIMEOUT=5000
