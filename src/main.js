@@ -80,7 +80,6 @@ function makeRequestAndSaveResponse() {
       // Guardar la respuesta en un archivo de texto
       fs.appendFile("/var/output.txt", salida + "\n", function (err) {
         if (err) throw err;
-        console.log("Saved!");
       });
     })
     .catch(function (error) {
